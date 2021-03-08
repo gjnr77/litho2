@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+/* width:991px이하일때 조건문 */
+/* 미디어쿼리 ★★세미콜론 절대금지★★ / all = screen, print, tv, sound 등 */
+/* css 안에서도 js처럼 */
+@media all and (max-width:980px){
+
+    /* header = nav */
+    #wrap #header .wrap .gap .container #nav {display:none;position:absolute;top:80px;left:0;background:#fff;width:100%;}
+    #wrap #header .wrap .gap .container #nav > ul > li {display:block;text-align:left;}
+    #wrap #header .wrap .gap .container #nav > ul > li > a {display:block;line-height:45px;font-weight:bold;color:rgba(0,0,0, .7);font-family:arial;font-size:14px;text-indent:20px;}
+    #wrap #header .wrap .gap .container #nav > ul > li > a:hover {color:rgba(0,0,0, 1);transition:color .3s;}
+
+
+    /* section1 = slide*/
+    /* 슬라이드 텍스트 박스 */
+    #wrap #main #section1 .wrap .gap .container .slide-container .slide-view .slide-wrap .slide .text-box {width:61.2244898vw;height:37.75510204vw;} /* 부모한테 relative 주기! */
+    #wrap #main #section1 .wrap .gap .container .slide-container .slide-view .slide-wrap .slide .text-box .text-gap {padding:10vw 11.42857143vw;}
+
+    #wrap #main #section1 .wrap .gap .container .slide-container .slide-view .slide-wrap .slide .text-box .text-gap .text-wrap .title1 {padding-bottom:4.081632653vw;}
+    #wrap #main #section1 .wrap .gap .container .slide-container .slide-view .slide-wrap .slide .text-box .text-gap .text-wrap .title1 h3 {font-size:1.428571429vw;}
+    #wrap #main #section1 .wrap .gap .container .slide-container .slide-view .slide-wrap .slide .text-box .text-gap .text-wrap .title1 h3 span:nth-child(2) {display: inline-block;width:7.142857143vw;}
+    #wrap #main #section1 .wrap .gap .container .slide-container .slide-view .slide-wrap .slide .text-box .text-gap .text-wrap .title1 h3 span i {display:inline-block;width:4.081632653vw;} /* 인라인블럭 만드는이유는 가운데 정렬 쉽게 하려고! */
+
+
+    #wrap #main #section1 .wrap .gap .container .slide-container .slide-view .slide-wrap .slide .text-box .text-gap .text-wrap .title2 {width:100%;}
+    #wrap #main #section1 .wrap .gap .container .slide-container .slide-view .slide-wrap .slide .text-box .text-gap .text-wrap .title2 h2 {float:left;font-size:4.897959184vw;line-height:120%;}
+    #wrap #main #section1 .wrap .gap .container .slide-container .slide-view .slide-wrap .slide .text-box .text-gap .text-wrap .title2 span {float:right;display:block;width:6.12244898vw;height:6.12244898vw;margin:2.653061224vw 0;}
+    #wrap #main #section1 .wrap .gap .container .slide-container .slide-view .slide-wrap .slide .text-box .text-gap .text-wrap .title2 span a {line-height:6.12244898vw;}
+    #wrap #main #section1 .wrap .gap .container .slide-container .slide-view .slide-wrap .slide .text-box .text-gap .text-wrap .title2 span a i {font-size:1.530612245vw;}
+}
+
+
+
+/* 창 너비 980px이하이면서 그리고 가로형 모드(landscape) 일때 
+ section1 높이를 600px로 고정한다 */
+ /* orientation : 방향 */
+
+@media all and (max-width:980px) and (orientation:landscape){
+    .slide-wrap .slide .text-box {display:none;} 
+    #wrap #main #section1 {height:600px;}
+}
+
+/* portrait : 세로형 */
+@media all and (max-width:980px) and (orientation:portrait){
+    .slide-wrap .slide .text-box {display:block;} 
+    #wrap #main #section1 {height:600px;}
+}

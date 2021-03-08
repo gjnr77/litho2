@@ -1,0 +1,175 @@
+<<반응형>>
+가로형 : 991px 이하 일 경우,
+높이 강제로 600px로 잡는다 (창넓이로 하면 너무 작아짐)
+
+
+<< header - position: fixed >>
+width:100%
+height:80px
+
+내부의 너비는 좌우에 마진값 35px 사용
+- 로고 좌측 고정
+- 네비게이션 가운데 고정
+- SNS(side menu) 우측 고정
+
+- 이벤트 : 마우스 휠 이벤트
+마우스휠이 위로 올라가면 헤더 영역이 보이고,
+마우스휠이 아래로 내려가면 헤더 영역이 사라짐
+
+- 헤더 영역 배경 기본값 : 투명
+스크롤 탑 값이 30px 이상이면
+헤더 영역 배경 색 검정으로 변경
+스크롤 탑 값이 30px 이하이면
+헤더 영역 배경 색 투명으로 변경
+
+< nav >
+GNB(메인메뉴)와 LNB(서브메뉴)
+GNB에 마우스 오버 시 LNB가 보인다(show())
+GNB에서 마우스가 떠나면 LNB는 사라진다(hide())
+LNB 안에 또 다른 LNB 존재
+해당 LNB에 마우스 오버 시 해당 LNB 가 보인다 (show())
+해당 LNB에서 마우스가 떠나면 해당 LNB는 사라진다(hide())
+
+GNB 선택 시 하이라이트 기능 존재 : 더 어두워지거나 색상이 변경된다
+그리고 메인메뉴 하단에 데코레이션 (애니메이션 : 언더바가 가운데서 커지는 효과)을 표시한다
+
+로고 : 111px * 36px (원사이즈)
+GNB : 14px; #fff; bold(600)
+LNB : 13px; #444; bold(500)
+사이드메뉴 : 15px;
+
+<< section1 >>
+width:100%
+height: 창높이
+
+- 슬라이드 3개 구성
+우측 하단에 슬라이드 텍스트 콘텐츠 : 배경 #fff
+width: 600px / 좌우 패딩 112px 포함
+height: 370px / 상하 패딩 98px 포함
+
+- 좌우 화살 버튼
+크기 40px*40px
+- 하단에 페이지 버튼 (인디게이터 버튼) 3개 가운데 배치
+크기 10px*10px / 좌우 여백 6px
+배경 #rgba(255,255,255, 1) 활성화 #rgba(255,255,255, .8) 비활성화
+
+
+
+<< section2 >>
+width: 100%
+height: 288px 
+padding 160px 0 ;
+
+콘텐츠 영역
+width: 1170px; 
+margin: 0 15px;
+배경: #fff;
+
+
+<< section3 >>
+width: 100%
+height: 544px 
+padding 130px 0 ;
+
+콘텐츠 영역
+width: 1170px; 
+margin: 0 15px;
+배경: #fff;
+
+
+<< section4 >>
+width: 100%
+height: 578px
+padding 130px 0 ;
+
+콘텐츠 영역
+width: 1170px; 
+margin: 0 15px;
+배경: #fff;
+
+
+<< section5 >>
+width: 100%
+height: 710px
+padding 130px 0 ;
+
+콘텐츠 영역
+width: 1170px; 
+margin: 0 15px;
+배경: #fff;
+
+슬라이드 4개
+좌측 여백: 140px
+height:530px
+width: 이미지에 따라 각각 다름
+
+
+<< section6 >>
+width: 100%
+height: 74px 
+padding: 아래만 130px
+
+콘텐츠 영역
+width: 100%; 
+margin: 0;
+배경: 이미지
+
+카운터 숫자 4개 구성
+
+
+
+<< section7 >>
+width: 100%
+height: 800px
+padding 0 ;
+
+콘텐츠 영역
+width: 1170px; 
+margin: 0 15px;
+배경: #fff;
+
+
+<< section8 >>
+width: 100%
+height: 180px
+padding 130px 0 ;
+
+콘텐츠 영역
+width: 1170px; 
+margin: 0 15px;
+배경: #fff;
+
+슬라이드 3개 구성
+
+
+<< section9 >>
+width: 100%
+height: 619px
+padding 130px 0 ;
+
+콘텐츠 영역
+width: 100%; 
+margin: 0 15px;
+배경: #fff;
+
+갤러리 이미지와 텍스트 콘텐츠
+
+<< section10 >>
+width: 100%
+height: 348px
+padding 0 ;
+
+콘텐츠 영역
+width: 1170px; 
+margin: 0 15px;
+배경: 이미지
+
+<< footer >>
+width: 100%
+height: 88px
+padding: 115px 0;
+
+콘텐츠 영역
+width: 1170px; 
+margin: 0 15px;
+배경: #232323;
