@@ -1,7 +1,11 @@
 ;(function($){
     var litho = {
-        init:function(){
+        btn: 0, //버튼 클릭을 기억하고 있는 변수 //전역 변수
+                //헤더 영역에서 모바일버튼 클릭 시 변경
+        
+        init:function(){ //멤버 함수 == 메서드
             var that = this;
+            that.scrollEventFn(); //여기서 btn 멤버 변수 가져다가 사용함
             that.headerFn();
             that.section1Fn();
             that.section2Fn();
@@ -14,6 +18,148 @@
             that.section9Fn();
             that.section10Fn();
             that.footerFn();
+
+        },
+        scrollEventFn:function(){
+            var scrollOld = 0;
+            var scrollNew = 0;
+            var $win = $(window);
+            var result = null;
+            var $header = $('#header');
+            var $bar = $('.bar');
+            var $mobileBtn = $('#header .mobile-btn');
+            var that = this;
+            // var $asideBtn = $('#aside ul li a');
+            // var $bar = $('#header .bar');
+            // var scrollTop = $(window).scrollTop;
+
+            function scrollEventFn(){
+                scrollNew = $win.scrollTop();
+                var scr = function(){ //리터럴 함수==익명함수 (변수형식)
+                    if(scrollOld - scrollNew > 0 ){
+                        result = 'UP'
+                    }
+                    else{
+                        result = 'DOWN'
+                    }
+                }
+                //위에 if문 3항연산자로 쓰기
+                // result = scrollOld - scrollNew > 0 ? 'UP' : 'DOWN';
+
+                scr();
+
+                scrollOld = scrollNew;
+
+                if(scrollNew == 0){
+                    $header.removeClass('addUp');
+                    $header.removeClass('addDown');
+                    $header.removeClass('addWhite');
+
+                    
+
+                }
+                else{
+
+                    //조건문
+                    if(result == 'UP'){
+                        //모바일 햄버거 버튼이 클릭된 상태의 이벤트
+                        if( that.btn == 1){
+                            $header.removeClass('addUp');
+                            $header.addClass('addDown');
+                            $header.addClass('addWhite')
+                        }
+                        //버튼 클릭안됐을때 & PC
+                        else{
+                            $header.removeClass('addWhite');
+                            $header.removeClass('addUp');
+                            $header.addClass('addDown');
+                        }
+
+                    }
+                    else if(result == 'DOWN'){
+                        //모바일 햄버거 버튼이 클릭된 상태의 이벤트
+                        if( that.btn == 1){
+                            $header.removeClass('addDown');
+                            $header.removeClass('addUp');
+                            $header.addClass('addWhite')
+                        }
+                        //버튼 클릭안됐을때 & PC
+                        else{
+                            $header.removeClass('addDown');
+                            $header.addClass('addUp');
+                        }
+
+                    }
+                }              
+            }
+
+
+
+            $win.scroll(function(){
+
+                    scrollEventFn();
+                
+
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // var scrollPrev = 0;
+            // var scrollCurrent = 0;
+            // var $window = $(window);
+            // var result = null ;
+
+
+            // function wheelPositionFn(){
+            //     result = scrollPrev - scrollCurrent > 0 ? 'UP' : 'DOWN'
+            //     return { //블록 기법 ,, 여러개 묶어서 출력,,?
+            //         result,
+            //         scrollPrev,
+            //         scrollCurrent
+            //     }
+            // }
+
+            // $window.scroll(function(){
+
+            //     scrollCurrent = $(this).scrollTop();
+            //     wheelPositionFn();
+            //     if(scrollCurrent <= 10 ){ //top 값이 10보다 작거나 같을때
+            //         $('#header').removeClass('addDown');
+            //         $('#header').removeClass('addUp');
+            //     }
+            //     else{
+            //         
+
+            //         if(result == 'DOWN'){ //스크롤이 아래로 내려오면
+            //             $('#header').removeClass('addDown'); //헤더가 내려오는걸 삭제
+            //             $('#header').addClass('addUp'); //헤더 올라감
+            //         }
+            //         if(result == 'UP'){ //스크롤이 위로 올라가면
+            //             $('#header').removeClass('addUp'); //헤더가 올라가는걸 삭제
+            //             $('#header').addClass('addDown'); //헤더 내려감
+            //         }
+            //     }
+
+            //     scrollPrev = scrollCurrent //old scroll 값
+
+            // });
 
         },
         headerFn:function(){
@@ -93,6 +239,9 @@
 
         //lithoNav객체 배열 서브메뉴를 
         //컴포넌트 요소에 넣기
+
+
+        function subObjectArrayFn(){
         //서브1 코딩
         var $col = $('#nav .col');
         var txt = '';
@@ -519,64 +668,180 @@
                 // txt+=lithoNav.sub7[2].sub[0];// menu-banner-01.jpg
                 // $img.eq(1).attr('src', txt); //
                 // txt='';
+            }//객체 배열로 메뉴 만들기 함수
+            subObjectArrayFn();
 
 
-
-            //네비게이션
-           //메인버튼(메뉴)
+           //네비게이션
+           
            var $mainBtn = $('.main-btn');
            var $sub = $('.sub');
            var $navUlLi = $('#nav > ul > li');
         
+           var $subBtn = $('.sub-btn');
+           var $subSub = $('.sub-sub');
+
+           var $subSubBtn = $('.sub-sub-btn');
+           var $subSubSub = $('.sub-sub-sub');
+
+           var $mobileBtn = $('#header .mobile-btn');
+           var $bar = $('#header .bar');
+           var $nav = $('#nav')
+
+           var $window = $(window);
+           var pc = 0;
+           var mobile = 0;
+
+           var $logoImg = $('#header #logo a img');
+           var that = this; // this = litho 라는 객체임
+
+
+           function pcModeFn(){
+           
+            $nav.stop().show(0); //얘가 display:block 이라 모바일->pc로 갈때 블럭으로 넓이 100% 잡혀서 어사이드가 내려가버림
+            $nav.css({display:'inline-block'}); //따라서 인라인블럭으로 다시 한 번 바꿔줘야함!
+            $sub.stop().hide(); // == $sub.css({display:'none'})
+            $subSub.stop().hide();
+            $subSubSub.stop().hide(); 
+            //초기화 (=기본값)
+           // $mainBtn.off('click')
+
+           //로고 이미지 바꾸기
+           $logoImg.attr('src','./img/logo-white.png');
+
+           //메인버튼(메뉴)
            $mainBtn.on({
-               mouseenter:function(){
+               mouseenter:function(e){
+                   e.preventDefault();
                 $(this).next().stop().show();
                }
            });
            $navUlLi.on({
-               mouseleave:function(){
+               mouseleave:function(e){
+                e.preventDefault();
                 $sub.stop().hide();
+                $subSub.stop().hide();
                }
            });
            
            //서브-서브 메뉴
-           var $subBtn = $('.sub-btn');
-           var $subSub = $('.sub-sub');
-           var $subDd = $('.sub dd');
-
            $subBtn.on({
-               mouseenter:function(){
+               mouseenter:function(e){
+                e.preventDefault();
                    $subSub.stop().hide();
                    $(this).next().stop().show();
-
                }
            });
-           //subdd로 하면 subsub영역과 dd 사이에 마진?패딩 값 공백이 있어서 subsub에 가기 전에 dd를 벗어나서 subsub가 사라져버림
-           //따라서 마우스영역을 넓힘
-           //대신 그럼 subsub메뉴가 중복되서 나타나니까 위에 @subBtn.on({})부분에 모든 서브 닫고 이 서브만 올린다로 고쳐줌
-           $navUlLi.on({
-               mouseleave:function(){
-                $subSub.stop().hide();
-               }
-           });
-
 
            //서브-서브-서브 메뉴
-           var $subSubBtn = $('.sub-sub-btn');
-           var $subSubSub = $('.sub-sub-sub');
-
            $subSubBtn.on({
-               mouseenter:function(){
-
+               mouseenter:function(e){
+                e.preventDefault();
                    $subSubSub.stop().hide();
                    $(this).next().stop().show();
                }
            });
            $subSub.on({
-               mouseleave:function(){
+               mouseleave:function(e){
+                e.preventDefault();
                 $subSubSub.stop().hide();
                }
            });
+        } //pcModeFn()
+
+
+           //모바일 메뉴 (980px 이하에서만) : 클릭이벤트
+
+           function mobileModeFn(){
+            $sub.stop().hide(); // == $sub.css({display:'none'})
+            $subSub.stop().show();
+            $subSubSub.stop().show(); 
+            $bar.removeClass('addMobile');
+            $nav.stop().slideUp(0);
+            //초기화 설정 / pc로 갔다가 돌아왔을때 모두 다 초기화되어있어야함!
+
+            //이벤트 삭제하기
+            $mainBtn.off('mouseenter');
+            $navUlLi.off('mouseleave');
+            $subBtn.off('mouseenter');
+            $subSubBtn.off('mouseenter');
+            $subSub.off('mouseleave');
+            $mainBtn.on('click')
+
+            //로고 이미지 바꾸기
+            $logoImg.attr('src','./img/logo-yellow-ochre-alt.png');
+  
+
+
+
+        } // mobileModeFn()
+
+       
+
+          //pc & mobile
+
+        function pcMobileFn(){
+            if($window.innerWidth() > 980 ){
+                
+                pc =1;
+                mobile=0;
+                that.btn = 0; //pc 버전에서 버튼이 눌러지지 않은 상태로 초기화
+                              //얘를 하지 않으면 모바일에서 네비 연상태(that.btn=1)에서 접지 않고
+                              //pc로 갔다가 돌아오면, 네비를 다시 열때 (that.btn=0)이되어서 꼬여버림
+                pcModeFn();
+            }
+            else {
+                
+                pc =0;
+                mobile=1;
+                mobileModeFn();
+            }
+        }
+
+        pcMobileFn();
+        setTimeout(pcMobileFn, 100); //로딩 시 
+
+      
+        $window.resize(function(){
+            setTimeout(pcMobileFn, 100); //크기 변경될 시
+        });
+
+        window.addEventListener('orientationchange',function(){
+            setTimeout(pcMobileFn, 100);
+        })
+
+        mobileModeFn();
+
+        //메인버튼(메뉴)
+        $mainBtn.on({
+            click:function(e){
+                e.preventDefault();
+                if(mobile==1){
+                    $sub.stop().slideUp();
+                    $(this).next().stop().slideToggle(300);
+                }
+            }
+        });
+        //모바일에서만 동작
+        //햄버거 
+        $mobileBtn.on({
+            click:function(e){
+                e.preventDefault();
+                $bar.toggleClass('addMobile'); //add + remove 한번 누르면 애드 한번 누르면 리무브
+                $nav.stop().slideToggle(300);
+
+                return that.btn == 0 ? that.btn = 1 : that.btn = 0 ;
+
+                //최상위 객체 변수 this.btn으로 하면 litho.btn이 아니라, 햄버거 메뉴 안에 있어서 햄버거함수가 this가됨!
+                // == litho.btn = 1;
+                // 한번 누르면(메뉴가 내려오면) 1, 다시 누르면(메뉴가 올라가면) 0이 되도록 3항 연산자 사용해서 만듦
+
+
+                
+
+            },
+        });
+        
 
         },
         section1Fn:function(){
@@ -594,42 +859,66 @@
            var $section1 = $('#section1'); //section1 즉 슬라이드 높이 잡기
            var cnt=0;
            var n = $('#section1 .slide').length - 3; //슬라이드 총갯수 -3(맨앞1, 맨뒤1,인덱스값 만들기) = 2
+           var setId = null;
+           var setId2 = null;
+
 
            function resizeFn(){
                
            $winW = $(window).width();
            $winH = $(window).height();
-           $section1.css({width:$winW, height:$winH}); 
-           //가로형 모드 반응형
-           console.log(window.orientation);
-           if(window.orientation==0){
-            alert('window.orientation==0'); //세로 
-           }
-           else if(window.orientation==90){
-            alert('window.orientation==90'); //가로
-           }
-           else if(window.orientation==180){
-            alert('window.orientation==180'); //세로 
-           }
-           else if(window.orientation==-90){
-            alert('window.orientation==-90'); //가로
-           }
-        
-
-           //세로형 모드 반응형
-
-
            $slide.css({width:$winW}); 
+           
+           //반응형 (자바스크립트 버전)
+           
+                if(window.orientation==0 || window.orientation==180){ //세로 portrait
+                 $winH = $winH
+                }
+                else if(window.orientation==90 || window.orientation==-90){ //가로 landscape
+                // $section1.css({height:600}); 
+                if($winW > 980){  // 가로방향에서도 
+                 $winH = $winH
+                }
+                else{
+                 $winH = 600;
+                }
+           }
+               
+          
+           $section1.css({width:$winW, height:$winH}); 
            mainSlideFn();
            }
 
+           
+        //    //js버전
+        //    $(window).on('orientationchange',function(){
+        //     if(window.orientation==0 || window.orientation==180){ //세로 portrait
+        //         $section1.css({width:$winW, height:$winH}); 
+    
+        //        }
+        //        else if(window.orientation==90 || window.orientation==-90){ //가로 landscape
+        //         $section1.css({width:$winW, height:600}); 
+    
+        //        }
+        //    })
 
 
            resizeFn();
+           setTimeout(resizeFn,100);
+           //setTimeout(실행할 함수, 숫자); == 0.1초 후에 반드시 (실행할 함수)를 실행해라
+           //혹시 즉시 실행이 안될 수 있기 때문에 
            
+
+
            $window.resize(function(){
-            resizeFn();
+            setTimeout(resizeFn, 100);
            });
+
+           window.addEventListener('orientationchange',function(){
+            setTimeout(resizeFn, 100);
+           })
+
+
 
            //메인슬라이드
 
@@ -653,6 +942,7 @@
 
 
 
+
            function nextSlideCountFn(){
                cnt++;
                mainSlideFn();
@@ -666,6 +956,7 @@
            $nextBtn.on({
                click:function(){
                    if(!$slideWrap.is(':animated')){
+                    pauseFn();
                     nextSlideCountFn();
                    }
 
@@ -675,6 +966,7 @@
            $prevBtn.on({
                click:function(){
                    if(!$slideWrap.is(':animated')){
+                    pauseFn();
                     prevSlideCountFn();
                    }
 
@@ -705,6 +997,7 @@
            $pageBtn.each(function(idx){
             $(this).on({ 
                 click:function(){
+                    pauseFn();
                     cnt = idx ; // 클릭한 버튼 인덱스 번호가 슬라이드 번호!
                     mainSlideFn(); 
                 }
@@ -718,17 +1011,36 @@
            $slideView.swipe({
                swipeLeft:function(){  //오른쪽에서 왼쪽으로 = 다음슬라이드
                 if(!$slideWrap.is(':animated')){
+                    pauseFn();
                     nextSlideCountFn();
                    }
                },
                swipeRight:function(){ //왼쪽에서 오른쪽으로 = 이전슬라이드
                 if(!$slideWrap.is(':animated')){
+                    pauseFn();
                     prevSlideCountFn();
                    }
                }
            });
 
+           //자동 타이머 실행
+           function autoTimerFn(){
+               setId = setInterval(nextSlideCountFn, 4000);
+           }
 
+           autoTimerFn();
+
+
+           function pauseFn(){
+               clearInterval(setId)
+               clearInterval(setId2)
+               setId2 = setInterval(function(){
+                clearInterval(setId)
+                clearInterval(setId2)
+                nextSlideCountFn();
+                autoTimerFn();
+               }, 6000)
+           }
 
         },
         section2Fn:function(){
@@ -743,16 +1055,35 @@
             var $prevBtn = $('#section3 .prev-btn');
             var $slideView = $('#section3 .slide-view');
             var $slide = $('#section3 .slide');
+            var $slideW = $('#section3 .slide').innerWidth(); //슬라이드 한개당 넓이 //반응형 슬라이드 너비
+            var $window = $(window);
             var cnt=0;
             var n = $slide.length - 9;
             var setId = null; 
 
+
+            //반응형 슬라이드
+            //1.반응형 함수 만들기
+            function responseFn(){
+                $slideW = $('#section3 .slide').innerWidth();
+                $section3SlideFn();
+            }
+
+            //responseFn(); //로딩시
+            setTimeout(responseFn, 100);
+
+            //2.윈도우 리사이즈 resize(); 
+            $window.resize(function(){
+                responseFn(); //화면크기 바뀔때마다
+            });
+            
+
             
              function $section3SlideFn(){
-                 $slideWrap.stop().animate({left:-390*cnt}, 400,'easeOutExpo', function(){
+                 $slideWrap.stop().animate({left:-$slideW*cnt}, 400,'easeOutExpo', function(){
                      if(cnt>n){cnt=0}
                      if(cnt<0){cnt=n}
-                     $slideWrap.stop().animate({left:-390*cnt}, 0)
+                     $slideWrap.stop().animate({left:-$slideW*cnt}, 0)
 
                  });
              }
@@ -760,7 +1091,7 @@
              function nextCountFn(){
                  cnt++;
                  $section3SlideFn();
-                 console.log(cnt);
+
              }
  
              function prevCountFn(){
@@ -884,10 +1215,321 @@
             
         },
         section5Fn:function(){
+            // 크기가 다른 슬라이드 이동하기 ★★★★
+          var $slideWrap = $('#section5 .slide-wrap');
+          var $slide = $('#section5 .slide');
+          var $slideW = 445; //1번째 -445*0 2번째 -445*1 -235  3번째 -445*2 -235 4번째 -445*3 -235 리턴 -445*0 -0이되어야함
+          var cnt = 0;
+          var n = $slide.length -9;
+          var a = 0;
+          var setId = null;
+          var setId2 = null;
+            
+
+
+          function slide5Fn(){
+
+            
+            if(cnt>1){ //2번째 이상 슬라이드부터 -235를 추가
+                a=-235;
+            }
+            // if(cnt<=1)
+            //     a=0; 
+            else{
+                a=0;
+            }
+            $slideWrap.stop().animate({left:(-$slideW*cnt)+a}, 400, function(){
+                if(cnt>n){
+                    cnt=0;
+                    a=0; /* 마지막 슬라이드에서 a 초기화 해야함 */}
+                if(cnt<0){
+                    cnt=n;
+                    a=-235; //4 3 2 순으로 넘어가니까 -235가 들어가있어야함?!
+                }
+                $slideWrap.stop().animate({left:(-$slideW*cnt)+a}, 0)
+            })
+
+        // 1 만 445 이고,
+        // 2, 3, 4 슬라이드는 모두 235가 추가되어있어야함!
+            
+          }
+
+          function nextSlideFn(){
+              cnt++;
+              slide5Fn();
+          }
+          function prevSlideFn(){
+              cnt--;
+              slide5Fn();
+          }
+
+          $slideWrap.swipe({
+              swipeLeft:function(){
+                pause();
+                nextSlideFn();
+              },
+              swipeRight:function(){
+                pause();
+                prevSlideFn();
+              }
+          });
           
+
+          function autoPlay(){
+              setId = setInterval(nextSlideFn, 4000);
+          }
+
+          autoPlay();
+
+          function pause(){
+            clearInterval(setId);
+            clearInterval(setId2);
+
+            setId2 = setInterval(function(){
+                clearInterval(setId);
+                clearInterval(setId2);
+                nextSlideFn();
+                autoPlay();
+            },5000)
+          }
+
+          
+
         },
         section6Fn:function(){
+            var $columnUl = $('#section6 .wrap .gap .container > ul > li ul');
+            var $column0 = $('#section6 .wrap .gap .container > ul > li').eq(0);
+            var $column1 = $('#section6 .wrap .gap .container > ul > li').eq(1);
+            var $column2 = $('#section6 .wrap .gap .container > ul > li').eq(2);
+            var $column3 = $('#section6 .wrap .gap .container > ul > li').eq(3);
+            var cnt=0;
+            var cnt2=0;
+            var cnt3=0;
+            var cnt4=0;
+            var setId = null;
+            var setId2 = null;
+            var setId3 = null;
+            var setId4 = null;
+
+            //자동화
+            var timer = 5;
             
+            var cnt1 = [0,0,0,0];
+            var cnt2 = [0,0,0,0];
+            var cnt3 = [0,0,0,0];
+            var cnt4 = [0,0,0,0];
+
+            var setId1 = [null, null, null, null];
+            var setId2 = [null, null, null, null];
+            var setId3 = [null, null, null, null];
+            var setId4 = [null, null, null, null];
+
+            var num1 = [];
+            var num2 = [];
+            var num3 = [];
+            var num4 = [];
+
+            var t = 0;
+            var st1 = null;
+            var st2 = null;
+
+            var $height = $('#section6 .wrap .gap .container > ul');
+
+            //html data-?(number:변경가능)가져오기
+            //객체 요소 내에 data-? 속성을 가져오기
+            
+            // console.log($column0.find('.col').eq(0).data('number'));
+            // console.log($column0.find('.col').eq(1).data('number'));
+            // console.log($column0.find('.col').eq(2).data('number'));
+            // console.log($column0.find('.col').eq(3).data('number'));
+
+            $column0.find('.col').each(function(idx){
+               num1[idx] = $(this).data('number'); //누적되어 들어감
+               //console.log(num1); 
+            });
+
+            $column1.find('.col').each(function(idx){
+               num2[idx] = $(this).data('number'); 
+            });
+
+            $column2.find('.col').each(function(idx){
+               num3[idx] = $(this).data('number'); 
+            });
+
+            $column3.find('.col').each(function(idx){
+               num4[idx] = $(this).data('number'); 
+            });
+
+
+
+
+
+            //find 주의점
+            //find 는 자식요소 또는 자손요소만 검색 가능! (자기 자신은 못 찾음)
+
+            //2530
+            // $column0.find('ul').eq(0).animate({top:-65*2},600)
+            // $column0.find('ul').eq(1).animate({top:-65*5},600)
+            // $column0.find('ul').eq(2).animate({top:-65*3},600)
+            // $column0.find('ul').eq(3).animate({top:-65*0},600)
+     
+           
+            //타이머
+            //ul 1번째칸 1번 = 2
+            // setId = setInterval(function(){
+            //     cnt++;
+            //     if(cnt>65*2){
+            //         clearInterval(setId);
+            //         cnt=0;
+            //     }
+            //     else{
+            //         $column0.find('ul').eq(0).css({ top:-cnt }) //0.001초에 1px씩 움직임
+            //     }
+            // },1)
+            // //ul 1번째칸 2번 = 5
+            // setId2 = setInterval(function(){
+            //     cnt2+=2;
+            //     if(cnt2>65*5){
+            //         clearInterval(setId2);
+            //         cnt2=0;
+            //     }
+            //     else{
+            //         $column0.find('ul').eq(1).css({ top:-cnt2 }) //0.001초에 1px씩 움직임
+            //     }
+            // },1)
+
+            // //ul 1번째칸 3번 = 3
+            // setId3 = setInterval(function(){
+            //     cnt3+=1;
+            //     if(cnt3>65*3){
+            //         clearInterval(setId3);
+            //         cnt3=0;
+            //     }
+            //     else{
+            //         $column0.find('ul').eq(2).css({ top:-cnt3 }) //0.001초에 1px씩 움직임
+            //     }
+            // },1)
+
+            // //ul 1번째칸 4번 = 0
+            // setId4 = setInterval(function(){
+            //     cnt4+=1;
+            //     if(cnt4>65*0){
+            //         clearInterval(setId4);
+            //         cnt4=0;
+            //     }
+            //     else{
+            //         $column0.find('ul').eq(3).css({ top:-cnt4 }) //0.001초에 1px씩 움직임
+            //     }
+            // },1)
+
+
+            //스크롤 이벤트 
+            $(window).scroll(function(){
+                
+                //offset - 맨위에서 section5의 top까지의 간격
+                if($(window).scrollTop() >= $('#section5').offset().top ){
+                    if(t==0){
+                         t=1; //변수 수정해서 다음에 조건 만족못하게 (=한번만 실행하고 끝나게)
+                         $('#section6 .wrap .gap .container > ul').addClass('addCount');
+                        setTimeout(formatFn,100);
+                        setTimeout(countFn,200);
+                         
+                    }
+                }
+
+                if($(window).scrollTop() == 0){ //윈도우 맨위에 올라갔을때 다시 초기화
+                   t = 0;
+                   cnt1 = [0,0,0,0];
+                   cnt2 = [0,0,0,0];
+                   cnt3 = [0,0,0,0];
+                   cnt4 = [0,0,0,0];
+                   $('#section6 .wrap .gap .container > ul').removeClass('addCount');
+                   
+                }
+
+                
+            });
+
+
+            //초기화 함수
+            function formatFn(){
+                $columnUl.css({top:0});     
+            }
+            
+           st1 = setTimeout(formatFn,100);
+           clearTimeout(st1);
+                
+
+            //카운트 함수
+            st2 = setTimeout(countFn,200);
+            clearTimeout(st2);
+
+
+            function countFn(){
+
+            setId1.forEach(function(el,idx){
+                setId1[idx] = setInterval(function(){
+                    cnt1[idx]++;
+                    if(cnt1[idx]> 65*num1[idx]){
+                        clearInterval(setId1[idx]);
+    
+                    }
+                    else{
+                        $column0.find('ul').eq(idx).css({ top:-cnt1[idx] }) 
+                    }
+                },5)
+
+            });
+
+            setId2.forEach(function(el,idx){
+                setId2[idx] = setInterval(function(){
+                    cnt2[idx]++;
+                    if(cnt2[idx] > 65*num2[idx]){
+                        clearInterval(setId2[idx]);
+                    }
+                    else{
+                        $column1.find('ul').eq(idx).css({top:-cnt2[idx]})
+                    }
+                },5)
+            });
+
+            setId3.forEach(function(el,idx){
+                setId3[idx] = setInterval(function(){
+                    cnt3[idx]++;
+                    if(cnt3[idx] > 65*num3[idx]){
+                        clearInterval(setId3[idx]);
+                    }
+                    else{
+                        $column2.find('ul').eq(idx).css({top:-cnt3[idx]})
+                    }
+                },5)
+            });
+                
+
+            setId4.forEach(function(el,idx){
+                setId4[idx] = setInterval(function(){
+                    cnt4[idx]++;
+                    if(cnt4[idx] > 65*num4[idx]){
+                        clearInterval(setId4[idx]);
+                    }
+                    else{
+                        $column3.find('ul').eq(idx).css({top:-cnt4[idx]})
+                    }
+                },5)
+            });
+                
+        }
+
+                
+            
+
+
+            
+
+            
+    
+           
+
         },
         section7Fn:function(){
            
